@@ -1,0 +1,2 @@
+module BlogPage
+end
