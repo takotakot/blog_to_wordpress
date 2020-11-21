@@ -40,6 +40,8 @@ ActiveRecord::Schema.define(version: 2020_11_21_074440) do
     t.string "html"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 0, null: false
+    t.index ["status"], name: "index_posts_on_status"
     t.index ["type_id"], name: "index_posts_on_type_id"
   end
 
