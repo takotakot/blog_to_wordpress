@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_22_224025) do
+ActiveRecord::Schema.define(version: 2020_11_22_234316) do
 
   create_table "media", force: :cascade do |t|
     t.boolean "is_internal", null: false
@@ -55,6 +55,15 @@ ActiveRecord::Schema.define(version: 2020_11_22_224025) do
     t.index ["type_id"], name: "index_posts_on_type_id"
   end
 
+  create_table "tag_uris", force: :cascade do |t|
+    t.integer "tag_id", null: false
+    t.text "original_uri"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index "\"tag\", \"original_uri\"", name: "index_tag_uris_on_tag_and_original_uri", unique: true
+    t.index ["tag_id"], name: "index_tag_uris_on_tag_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name", null: false
     t.string "oldid", null: false
@@ -74,4 +83,5 @@ ActiveRecord::Schema.define(version: 2020_11_22_224025) do
   add_foreign_key "post_types", "posts"
   add_foreign_key "post_types", "types"
   add_foreign_key "posts", "types"
+  add_foreign_key "tag_uris", "tags"
 end
