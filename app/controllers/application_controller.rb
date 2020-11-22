@@ -19,6 +19,15 @@ class ApplicationController < ActionController::Base
     posts.length
   end
 
+  def self.all_html_tags_under_article
+    tags = Set.new
+    Post.where(status: 200).all.each do |post|
+      # p tags
+      tags.merge(post.all_html_tags_under_article)
+    end
+    tags
+  end
+
   def self.find_html_tags_from_article(needle_tags)
     result = []
 
