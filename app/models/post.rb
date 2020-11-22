@@ -9,6 +9,21 @@ class Post < ApplicationRecord
     @doc ||= Nokogiri::HTML.parse(html)
   end
 
+  def all_html_tags_under_article
+    tags = Set.new
+    set_doc
+
+    article.each do |div|
+      div.traverse do |node|
+        if node.text? then
+        else
+          tags.add(node.name)
+        end
+      end
+    end
+    tags
+  end
+
   def article
     set_doc
 
