@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_23_024051) do
+ActiveRecord::Schema.define(version: 2020_11_23_042800) do
 
   create_table "media", force: :cascade do |t|
     t.boolean "is_internal", null: false
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2020_11_23_024051) do
     t.integer "tag_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index "\"post\", \"tag\"", name: "index_post_tags_on_post_and_tag", unique: true
+    t.index ["post_id", "tag_id"], name: "index_post_tags_on_post_id_and_tag_id", unique: true
     t.index ["post_id"], name: "index_post_tags_on_post_id"
     t.index ["tag_id"], name: "index_post_tags_on_tag_id"
   end
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 2020_11_23_024051) do
   create_table "post_types", force: :cascade do |t|
     t.integer "post_id", null: false
     t.integer "type_id", null: false
-    t.index "\"post\", \"type\"", name: "index_post_types_on_post_and_type", unique: true
+    t.index ["post_id", "type_id"], name: "index_post_types_on_post_id_and_type_id", unique: true
     t.index ["post_id"], name: "index_post_types_on_post_id"
     t.index ["type_id"], name: "index_post_types_on_type_id"
   end
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 2020_11_23_024051) do
     t.text "original_uri"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index "\"tag\", \"original_uri\"", name: "index_tag_uris_on_tag_and_original_uri", unique: true
+    t.index ["tag_id", "original_uri"], name: "index_tag_uris_on_tag_id_and_original_uri", unique: true
     t.index ["tag_id"], name: "index_tag_uris_on_tag_id"
   end
 
