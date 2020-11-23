@@ -8,4 +8,13 @@ class ApplicationController < ActionController::Base
       sleep INTERVAL
     end
   end
+
+  # for development
+  def self.analyze_all_200
+    posts = Post.where(status: 200).all
+    posts.each do |post|
+      post.analyze
+    end
+    posts.length
+  end
 end
