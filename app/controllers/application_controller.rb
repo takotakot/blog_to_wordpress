@@ -17,4 +17,14 @@ class ApplicationController < ActionController::Base
     end
     posts.length
   end
+
+  def self.find_html_tags_from_article(needle_tags)
+    result = []
+
+    Post.where(status: 200).all.each do |post|
+      # p tags
+      result.concat(post.find_html_tags_from_article(needle_tags))
+    end
+    result
+  end
 end

@@ -63,6 +63,20 @@ class Post < ApplicationRecord
     @doc ||= Nokogiri::HTML.parse(html)
   end
 
+  def find_html_tags_from_article(needle_tags)
+    found_html_tags = []
+
+    article.each do |div|
+      div.traverse do |node|
+        if node.text? then
+        else
+          found_html_tags << {id: self.id, name: node.name, text: node.text} if needle_tags.include?(node.name)
+        end
+      end
+    end
+    found_html_tags
+  end
+
   def all_html_tags_under_article
     tags = Set.new
     set_doc
