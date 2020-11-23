@@ -126,7 +126,8 @@ class Post < ApplicationRecord
     set_doc
 
     img_src = img.xpath('@src').text
-    img_uri = URI.join(original_uri, img_src)
+    # img_uri = URI.join(original_uri, URI.escape(img_src))
+    img_uri = Addressable::URI.parse(original_uri).join(img_src)
 
     medium = Medium.find_or_initialize_by(uri: img_uri.to_s)
     if medium.new_record?
