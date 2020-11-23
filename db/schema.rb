@@ -10,18 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_22_234316) do
+ActiveRecord::Schema.define(version: 2020_11_23_024051) do
 
   create_table "media", force: :cascade do |t|
     t.boolean "is_internal", null: false
     t.string "original_src", null: false
     t.string "server_path", null: false
-    t.string "name", null: false
+    t.string "title", null: false
     t.string "local_path", null: false
     t.date "date_loaded", null: false
     t.date "oldest_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "alt", null: false
+    t.text "uri", null: false
+    t.integer "status", default: 0, null: false
   end
 
   create_table "post_tags", force: :cascade do |t|
