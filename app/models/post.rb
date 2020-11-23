@@ -7,6 +7,8 @@ class Post < ApplicationRecord
   # attr_accessor :page
   include BlogHelper
 
+  ANALYZED_VERSION = 1
+
   def scrape
     set_page
 
@@ -22,8 +24,14 @@ class Post < ApplicationRecord
     # use self.html after downloading
     set_doc
 
+    # update for tune
+    self.title = get_page_title
+    self.date = get_page_date
+
     add_all_blog_tags
     add_all_media
+
+    self.analyzed_version = ANALYZED_VERSION
 
     save!
   end

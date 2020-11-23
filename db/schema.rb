@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_23_055655) do
+ActiveRecord::Schema.define(version: 2020_11_23_065359) do
 
   create_table "media", force: :cascade do |t|
     t.boolean "is_internal", null: false
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2020_11_23_055655) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0, null: false
+    t.integer "analyzed_version", default: 0, null: false
     t.index ["status"], name: "index_posts_on_status"
     t.index ["type_id"], name: "index_posts_on_type_id"
   end
