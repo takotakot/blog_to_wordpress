@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_23_065359) do
+ActiveRecord::Schema.define(version: 2020_12_04_115135) do
 
   create_table "media", force: :cascade do |t|
     t.boolean "is_internal", null: false
@@ -25,6 +25,9 @@ ActiveRecord::Schema.define(version: 2020_11_23_065359) do
     t.text "alt", null: false
     t.text "uri", null: false
     t.integer "status", default: 0, null: false
+    t.text "base_uri"
+    t.datetime "last_modified"
+    t.text "meta"
   end
 
   create_table "post_media", force: :cascade do |t|
