@@ -2,6 +2,29 @@ class ApplicationController < ActionController::Base
   INTERVAL = 0.5
   PARALLEL_TYPE = :process
 
+  def self.add_media_by_hand
+    MEDIA_RELATION.each do |record|
+      post = Post.find(record[:post_id])
+      media_uri = record[:media_uri]
+
+      medium = Medium.find_or_initialize_by(uri: media_uri)
+      if medium.new_record?
+        medium.original_src = media_uri
+        medium.is_internal = true
+        medium.title = ''
+        medium.alt = ''
+        medium.oldest_date = post.date
+        medium.server_path = media_uri
+        medium.local_path = ''
+        medium.date_loaded = post.date
+      else
+        medium.oldest_date = [medium.oldest_date, post.date].min
+      end
+
+      medium.save!
+    end
+  end
+
   def self.scrape_and_analyze_all_zero
     Post.where(status: 0).all.each do |post|
       post.scrape
