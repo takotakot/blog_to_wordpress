@@ -24,6 +24,11 @@ class Medium < ApplicationRecord
       # TODO
       # raise e
       self.status = e.io.status[0].to_i
+      p 'Redirect 302', self.id, uri
+      if self.status == 302
+        dat = get(URI.join(uri, normalize_uri(e.io.meta['location'])))
+      end
+      self.status = 302 if self.status == 200
     rescue URI::InvalidURIError => e
       puts self.id
       self.status = 0
