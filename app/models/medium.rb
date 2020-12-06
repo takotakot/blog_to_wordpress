@@ -24,6 +24,11 @@ class Medium < ApplicationRecord
       # TODO
       # raise e
       self.status = e.io.status[0].to_i
+    rescue URI::InvalidURIError => e
+      puts self.id
+      self.status = 0
+      raise
+      return
     end
 
     dat
