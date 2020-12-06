@@ -84,4 +84,17 @@ class ApplicationController < ActionController::Base
     code = 610
     Medium.where('uri LIKE ?', 'data:image/%').all.update(status: code)
   end
+
+  def self.medium_check_file
+    ignore_status = [
+      404,
+      610,
+    ]
+    Medium.all.find_in_batches do |media|
+      media.each do |medium|
+        next if ignore_status.include?(medium.status)
+        medium.check_file
+      end
+    end
+  end
 end

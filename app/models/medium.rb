@@ -68,4 +68,13 @@ class Medium < ApplicationRecord
     mtime ||= oldest_date
     FileUtils.touch pathname_obj.to_s, mtime: mtime.to_time
   end
+
+  def check_file
+    rel_path = self.local_path
+    file_path = File.join(media_dir_path, rel_path)
+    if ! File.exist?(file_path)
+      p self.id.to_s + ' not exists!'
+      raise
+    end
+  end
 end
