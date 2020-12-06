@@ -2,16 +2,20 @@ class Medium < ApplicationRecord
   has_many :post_medium
   has_many :post, through: :post_medium
 
+  include ApplicationHelper
+
   MEDIA_DIR = 'media'
 
   def store_local
-    content = get(self.uri)
+    return if self.uri.start_with?('data:')
+
+    normalized_uri = normalize_uri(self.uri)
+    content = get(normalized_uri)
     save_file(content)
-    save!
-    true
   end
 
   def get(uri)
+    require 'open-uri'
     begin
       dat = URI.open(uri) do |f|
         self.status = f.status[0]
