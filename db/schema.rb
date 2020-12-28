@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_28_074648) do
+ActiveRecord::Schema.define(version: 2020_12_28_110214) do
 
   create_table "media", force: :cascade do |t|
     t.boolean "is_internal", null: false
@@ -95,6 +95,22 @@ ActiveRecord::Schema.define(version: 2020_12_28_074648) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "wordpress_posts", force: :cascade do |t|
+    t.integer "post_id"
+    t.bigint "wp_id"
+    t.integer "status", default: 0, null: false
+    t.text "slug"
+    t.text "title"
+    t.text "content", limit: 4294967295
+    t.datetime "date"
+    t.integer "version", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id"], name: "index_wordpress_posts_on_post_id"
+    t.index ["status"], name: "index_wordpress_posts_on_status"
+    t.index ["wp_id"], name: "index_wordpress_posts_on_wp_id", unique: true
+  end
+
   create_table "wp_api_logs", force: :cascade do |t|
     t.bigint "wp_id"
     t.text "method"
@@ -113,4 +129,5 @@ ActiveRecord::Schema.define(version: 2020_12_28_074648) do
   add_foreign_key "post_types", "types"
   add_foreign_key "posts", "types"
   add_foreign_key "tag_uris", "tags"
+  add_foreign_key "wordpress_posts", "posts"
 end
