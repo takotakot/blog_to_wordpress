@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_04_115135) do
+ActiveRecord::Schema.define(version: 2020_12_28_074648) do
 
   create_table "media", force: :cascade do |t|
     t.boolean "is_internal", null: false
@@ -91,6 +91,16 @@ ActiveRecord::Schema.define(version: 2020_12_04_115135) do
 
   create_table "types", force: :cascade do |t|
     t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "wp_api_logs", force: :cascade do |t|
+    t.bigint "wp_id"
+    t.text "method"
+    t.text "endpoint"
+    t.text "query"
+    t.text "ret_json"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
