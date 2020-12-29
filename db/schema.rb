@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_28_110214) do
+ActiveRecord::Schema.define(version: 2020_12_29_112626) do
 
   create_table "media", force: :cascade do |t|
     t.boolean "is_internal", null: false
@@ -95,6 +95,23 @@ ActiveRecord::Schema.define(version: 2020_12_28_110214) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "wordpress_media", force: :cascade do |t|
+    t.integer "medium_id", null: false
+    t.bigint "wp_id"
+    t.integer "status", default: 0, null: false
+    t.datetime "date"
+    t.bigint "wp_post_id"
+    t.text "title"
+    t.text "alt_text"
+    t.integer "version", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["medium_id"], name: "index_wordpress_media_on_medium_id"
+    t.index ["status"], name: "index_wordpress_media_on_status"
+    t.index ["wp_id"], name: "index_wordpress_media_on_wp_id", unique: true
+    t.index ["wp_post_id"], name: "index_wordpress_media_on_wp_post_id", unique: true
+  end
+
   create_table "wordpress_posts", force: :cascade do |t|
     t.integer "post_id"
     t.bigint "wp_id"
@@ -129,5 +146,6 @@ ActiveRecord::Schema.define(version: 2020_12_28_110214) do
   add_foreign_key "post_types", "types"
   add_foreign_key "posts", "types"
   add_foreign_key "tag_uris", "tags"
+  add_foreign_key "wordpress_media", "media"
   add_foreign_key "wordpress_posts", "posts"
 end
