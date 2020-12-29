@@ -1,5 +1,5 @@
 class WordpressPost < ApplicationRecord
-  belongs_to :post
+  belongs_to :post  #, optional: true
 
   enum status: {
     ignored: 0,
