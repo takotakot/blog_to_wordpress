@@ -1,6 +1,24 @@
 module WordpressPostHelper
   VERSION = 1
 
+  def self.mirror_post(post)
+    wp_post = self.find_or_create(post)
+    self.prepare(PostHelper, wp_post)
+    self.create_draft(PostHelper, wp_post)
+    self.set_categories(PostHelper, wp_post)
+    self.upload_all_media(PostHelper, wp_post, WordpressMediumHelper, MediumHelper)
+    self.rewrite_media_tags(PostHelper, wp_post, WordpressMediumHelper, MediumHelper)
+    self.upload(PostHelper, wp_post)
+    self.publish(PostHelper, wp_post)
+    wp_post
+  end
+
+  def self.find_or_create(post)
+    wp_post = WordpressPost.find_by(post_id: post.id)
+    return wp_post unless wp_post.nil?
+    self.create(post)
+  end
+
   def self.create(post)
     wp_post = WordpressPost.find_or_initialize_by(post_id: post.id)
     return nil unless wp_post.new_record?
