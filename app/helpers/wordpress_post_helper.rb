@@ -56,8 +56,27 @@ module WordpressPostHelper
   end
 
   # draft_created -> categories_set
+  def self.set_categories(posthelper, wp_post)
+    return false unless wp_post.draft_created?
+
+    post_data = self.post_categories(wp_post)
+    response_hash = WordpressApiHelper.post_post(wp_post, post_data.to_json)
+    pp response_hash
+
+    wp_post.status = WordpressPost.statuses[:categories_set]
+
+    # For development
+    wp_post.version = VERSION
+
+    wp_post.save
+  end
+
   # categories_set -> all_media_uploaded
   # all_media_uploaded -> rewritten
   # rewritten -> uploaded
   # uploaded -> published
+
+  def self.post_categories(wp_post)
+    SecretLogicHelper.post_categories(wp_post)
+  end
 end
