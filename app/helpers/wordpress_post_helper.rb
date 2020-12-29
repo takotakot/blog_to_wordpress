@@ -91,8 +91,59 @@ module WordpressPostHelper
   end
 
   # all_media_uploaded -> rewritten
+  def self.rewrite_media_tags(posthelper, wp_post, wp_mediumhelper, mediumhelper)
+    return false unless wp_post.all_media_uploaded?
+
+    if wp_post.post.medium.length == 0
+      # No media
+    else
+      # Rewrite src
+      raise
+    end
+
+    wp_post.status = WordpressPost.statuses[:rewritten]
+
+    # For development
+    wp_post.version = VERSION
+
+    wp_post.save
+  end
+
   # rewritten -> uploaded
+  def self.upload(posthelper, wp_post)
+    return false unless wp_post.rewritten?
+
+    post_data = {
+      content: wp_post.content,
+    }
+    response_hash = WordpressApiHelper.post_post(wp_post, post_data.to_json)
+    pp response_hash
+
+    wp_post.status = WordpressPost.statuses[:uploaded]
+
+    # For development
+    wp_post.version = VERSION
+
+    wp_post.save
+  end
+
   # uploaded -> published
+  def self.publish(posthelper, wp_post)
+    return false unless wp_post.uploaded?
+
+    post_data = {
+      status: 'publish',
+    }
+    response_hash = WordpressApiHelper.post_post(wp_post, post_data.to_json)
+    pp response_hash
+
+    wp_post.status = WordpressPost.statuses[:published]
+
+    # For development
+    wp_post.version = VERSION
+
+    wp_post.save
+  end
 
   def self.post_categories(wp_post)
     SecretLogicHelper.post_categories(wp_post)
