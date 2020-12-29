@@ -72,6 +72,24 @@ module WordpressPostHelper
   end
 
   # categories_set -> all_media_uploaded
+  def self.upload_all_media(posthelper, wp_post, wp_mediumhelper, mediumhelper)
+    return false unless wp_post.categories_set?
+
+    if wp_post.post.medium.length == 0
+      # No media
+    else
+      # Upload all media
+      raise
+    end
+
+    wp_post.status = WordpressPost.statuses[:all_media_uploaded]
+
+    # For development
+    wp_post.version = VERSION
+
+    wp_post.save
+  end
+
   # all_media_uploaded -> rewritten
   # rewritten -> uploaded
   # uploaded -> published
