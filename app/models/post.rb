@@ -201,4 +201,8 @@ class Post < ApplicationRecord
 
     @doc.xpath('id("article")')
   end
+
+  def article_html
+    article.to_html
+  end
 end
