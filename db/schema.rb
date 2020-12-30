@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_29_112626) do
+ActiveRecord::Schema.define(version: 2020_12_30_101401) do
 
   create_table "media", force: :cascade do |t|
     t.boolean "is_internal", null: false
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_112626) do
     t.integer "version", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "source_url"
     t.index ["medium_id"], name: "index_wordpress_media_on_medium_id"
     t.index ["status"], name: "index_wordpress_media_on_status"
     t.index ["wp_id"], name: "index_wordpress_media_on_wp_id", unique: true
