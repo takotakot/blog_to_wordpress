@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_30_101401) do
+ActiveRecord::Schema.define(version: 2020_12_30_104840) do
 
   create_table "media", force: :cascade do |t|
     t.boolean "is_internal", null: false
@@ -110,7 +110,7 @@ ActiveRecord::Schema.define(version: 2020_12_30_101401) do
     t.index ["medium_id"], name: "index_wordpress_media_on_medium_id"
     t.index ["status"], name: "index_wordpress_media_on_status"
     t.index ["wp_id"], name: "index_wordpress_media_on_wp_id", unique: true
-    t.index ["wp_post_id"], name: "index_wordpress_media_on_wp_post_id", unique: true
+    t.index ["wp_post_id"], name: "index_wordpress_media_on_wp_post_id"
   end
 
   create_table "wordpress_posts", force: :cascade do |t|
