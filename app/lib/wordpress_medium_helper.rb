@@ -15,7 +15,7 @@ class WordpressMediumHelper
     find_or_create
     prepare
     set_parent
-    raise
+    upload
   end
 
   def self.upload_all_media_for_wp_post(wp_post, posthelper, wp_posthelper, mediumhelper)
@@ -81,5 +81,32 @@ class WordpressMediumHelper
   end
 
   # parent_ready -> uploaded
+  def upload
+    require 'mime/types'
+    require 'net/http/post/multipart'
+
+    return nil unless @wp_medium.parent_ready?
+    file_path = mediumhelper.file_path(@wp_medium.medium)
+
+    post_data = {
+      title: @wp_medium.title,
+      alt_text: @wp_medium.alt_text,
+      date: @wp_medium.date.iso8601,
+      post: @wp_medium.wp_post_id,
+      file: UploadIO.new(file_path, MIME::Types.type_for(file_path)[0].to_s),
+    }
+    response_hash = WordpressApiHelper.post_media(@wp_medium, post_data)
+    pp response_hash
+
+    @wp_medium.wp_id = response_hash['id']
+    @wp_medium.source_url = response_hash['source_url']
+    @wp_medium.status = WordpressMedium.statuses[:uploaded]
+
+    # For development
+    @wp_medium.version = VERSION
+
+    @wp_medium.save
+  end
+
   # uploaded -> inserted
 end
