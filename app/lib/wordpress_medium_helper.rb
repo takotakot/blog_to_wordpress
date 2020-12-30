@@ -1,5 +1,6 @@
 class WordpressMediumHelper
   VERSION = 1
+  attr_accessor :medium, :mediumhelper, :wp_post, :posthelper, :wp_posthelper, :wp_medium
 
   def initialize(medium:, mediumhelper:, wp_post:, posthelper:, wp_posthelper:)
     @medium = medium
