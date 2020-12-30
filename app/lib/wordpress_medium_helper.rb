@@ -86,6 +86,8 @@ class WordpressMediumHelper
     require 'net/http/post/multipart'
 
     return nil unless @wp_medium.parent_ready?
+    return nil unless @wp_medium.wp_id.nil?
+
     file_path = mediumhelper.file_path(@wp_medium.medium)
 
     post_data = {
