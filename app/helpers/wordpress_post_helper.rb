@@ -58,7 +58,7 @@ module WordpressPostHelper
     post_data = {
       title: wp_post.title,
       content: wp_post.content,
-      date: wp_post.date.iso8601,
+      date_gmt: wp_post.date.iso8601,
       status: 'draft',
     }
     response_hash = WordpressApiHelper.post_post(wp_post, post_data.to_json)

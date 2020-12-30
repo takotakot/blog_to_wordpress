@@ -93,7 +93,7 @@ class WordpressMediumHelper
     post_data = {
       title: @wp_medium.title,
       alt_text: @wp_medium.alt_text,
-      date: @wp_medium.date.iso8601,
+      date_gmt: @wp_medium.date.iso8601,
       post: @wp_medium.wp_post_id,
       file: UploadIO.new(file_path, MIME::Types.type_for(file_path)[0].to_s),
     }
