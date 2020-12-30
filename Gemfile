@@ -50,3 +50,5 @@ gem 'addressable'
 gem 'parallel'
 
 gem 'multipart-post'
+
+gem 'mime-types'
