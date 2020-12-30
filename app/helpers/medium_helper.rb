@@ -17,4 +17,12 @@ module MediumHelper
     return false unless medium.is_internal
     true
   end
+
+  def self.file_path(medium)
+    File.join(medium.media_dir_path, medium.local_path)
+  end
+
+  def self.file_name(medium)
+    File.basename(medium.local_path)
+  end
 end
