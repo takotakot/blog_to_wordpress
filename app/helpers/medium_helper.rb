@@ -25,4 +25,8 @@ module MediumHelper
   def self.file_name(medium)
     File.basename(medium.local_path)
   end
+
+  def self.rewrite_needed?(medium)
+    self.upload_needed?(medium)
+  end
 end
