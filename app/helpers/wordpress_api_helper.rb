@@ -16,6 +16,7 @@ module WordpressApiHelper
 
   def self.post_post(wp_post, post_data)
     require 'net/http'
+    require 'net/https'
 
     uri = self.post_endpoint(wp_post)
 
@@ -29,6 +30,9 @@ module WordpressApiHelper
 
     uri_obj= URI.parse(uri)
     http = Net::HTTP.new(uri_obj.host, uri_obj.port)
+    if uri_obj.port == 443
+      http.use_ssl = true
+    end
 
     req = Net::HTTP::Post.new(uri_obj.path)
     req.content_type = 'application/json'
@@ -52,6 +56,7 @@ module WordpressApiHelper
 
   def self.post_media(wp_medium, post_data)
     require 'net/http'
+    require 'net/https'
     require 'net/http/post/multipart'
 
     uri = self.media_endpoint
@@ -66,6 +71,9 @@ module WordpressApiHelper
 
     uri_obj= URI.parse(uri)
     http = Net::HTTP.new(uri_obj.host, uri_obj.port)
+    if uri_obj.port == 443
+      http.use_ssl = true
+    end
     # http.set_debug_output($stdout)
 
     req = Net::HTTP::Post::Multipart.new(uri_obj.path, post_data)
