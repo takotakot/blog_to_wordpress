@@ -8,4 +8,10 @@ class Post < ApplicationRecord
   def set_doc
     @doc ||= Nokogiri::HTML.parse(html)
   end
+
+  def article
+    set_doc
+
+    @doc.xpath('id("article")')
+  end
 end
