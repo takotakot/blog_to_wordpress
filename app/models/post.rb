@@ -18,6 +18,16 @@ class Post < ApplicationRecord
     save!
   end
 
+  def analyze
+    # use self.html after downloading
+    set_doc
+
+    add_all_blog_tags
+    add_all_media
+
+    save!
+  end
+
   def set_page
     @page = BlogPage::Base.new
     @page.get(original_uri)
