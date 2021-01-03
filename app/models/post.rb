@@ -110,6 +110,41 @@ class Post < ApplicationRecord
     blog_tag
   end
 
+  def add_all_media
+    set_doc
+
+    add_all_img_to_medium
+  end
+
+  def add_all_img_to_medium
+    article.xpath('.//img').each do |img|
+      add_img_to_medium(img)
+    end
+  end
+
+  def add_img_to_medium(img)
+    set_doc
+
+    img_src = img.xpath('@src').text
+    img_uri = URI.join(original_uri, img_src)
+
+    medium = Medium.find_or_initialize_by(uri: img_uri.to_s)
+    if medium.new_record?
+      medium.original_src = img_src
+      medium.is_internal = is_internal_uri(img_uri.to_s)
+      medium.title = img.xpath('@title').text || ''
+      medium.alt = img.xpath('@alt').text || ''
+      medium.oldest_date = self.date
+      medium.server_path = img_uri.path
+      medium.local_path = img_uri.path
+      medium.date_loaded = self.date
+    else
+      medium.oldest_date = [medium.oldest_date, self.date].min
+    end
+
+    medium.save!
+  end
+
   def article
     set_doc
 
