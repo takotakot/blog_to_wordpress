@@ -5,6 +5,7 @@ class Post < ApplicationRecord
   has_many :post_medium
   has_many :medium, through: :post_medium
   # attr_accessor :page
+  include BlogHelper
 
   def scrape
     set_page
