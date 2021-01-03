@@ -114,6 +114,7 @@ class Post < ApplicationRecord
     set_doc
 
     add_all_img_to_medium
+    add_all_object_to_medium
   end
 
   def add_all_img_to_medium
@@ -144,6 +145,38 @@ class Post < ApplicationRecord
     end
 
     medium.save!
+  end
+
+  def add_all_object_to_medium
+    article.xpath('.//object').each do |obj|
+      new_medium = add_object_to_medium(obj)
+      p new_medium
+      self.medium << new_medium unless self.medium.include?(new_medium)
+    end
+  end
+
+  def add_object_to_medium(obj)
+    set_doc
+
+    obj_data = obj.xpath('@src').text
+    obj_uri = Addressable::URI.parse(original_uri).join(obj_data)
+
+    medium = Medium.find_or_initialize_by(uri: obj_uri.to_s)
+    if medium.new_record?
+      medium.original_src = obj_data
+      medium.is_internal = is_internal_uri(obj_uri.to_s)
+      medium.title = obj.xpath('@title').text || ''
+      medium.alt = obj.xpath('@alt').text || ''
+      medium.oldest_date = self.date
+      medium.server_path = obj_uri.path
+      medium.local_path = obj_uri.path
+      medium.date_loaded = self.date
+    else
+      medium.oldest_date = [medium.oldest_date, self.date].min
+    end
+
+    medium.save!
+    medium
   end
 
   def article
