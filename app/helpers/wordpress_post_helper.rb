@@ -97,7 +97,7 @@ module WordpressPostHelper
       # No media
     else
       # Upload all media
-      raise
+      wp_mediumhelper.upload_all_media_for_wp_post(wp_post, posthelper, self, mediumhelper)
     end
 
     wp_post.status = WordpressPost.statuses[:all_media_uploaded]
