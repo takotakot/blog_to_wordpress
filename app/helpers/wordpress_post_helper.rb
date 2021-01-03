@@ -33,6 +33,28 @@ module WordpressPostHelper
   end
 
   # prepared -> draft_created
+  # Post type is depend on post.type
+  def self.create_draft(posthelper, wp_post)
+    return false unless wp_post.prepared?
+
+    post_data = {
+      title: wp_post.title,
+      content: wp_post.content,
+      date: wp_post.date.iso8601,
+      status: 'draft',
+    }
+    response_hash = WordpressApiHelper.post_post(wp_post, post_data.to_json)
+    pp response_hash
+
+    wp_post.wp_id = response_hash['id']
+    wp_post.status = WordpressPost.statuses[:draft_created]
+
+    # For development
+    wp_post.version = VERSION
+
+    wp_post.save
+  end
+
   # draft_created -> categories_set
   # categories_set -> all_media_uploaded
   # all_media_uploaded -> rewritten
