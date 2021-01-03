@@ -116,7 +116,7 @@ module WordpressPostHelper
       # No media
     else
       # Rewrite src
-      raise
+      wp_post.content = self.rewrite_media_tags_html(posthelper, wp_post, wp_mediumhelper, mediumhelper)
     end
 
     wp_post.status = WordpressPost.statuses[:rewritten]
