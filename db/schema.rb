@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_23_042800) do
+ActiveRecord::Schema.define(version: 2020_11_23_055655) do
 
   create_table "media", force: :cascade do |t|
     t.boolean "is_internal", null: false
@@ -25,6 +25,16 @@ ActiveRecord::Schema.define(version: 2020_11_23_042800) do
     t.text "alt", null: false
     t.text "uri", null: false
     t.integer "status", default: 0, null: false
+  end
+
+  create_table "post_media", force: :cascade do |t|
+    t.integer "post_id", null: false
+    t.integer "medium_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["medium_id"], name: "index_post_media_on_medium_id"
+    t.index ["post_id", "medium_id"], name: "index_post_media_on_post_id_and_medium_id", unique: true
+    t.index ["post_id"], name: "index_post_media_on_post_id"
   end
 
   create_table "post_tags", force: :cascade do |t|
@@ -81,6 +91,8 @@ ActiveRecord::Schema.define(version: 2020_11_23_042800) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "post_media", "media"
+  add_foreign_key "post_media", "posts"
   add_foreign_key "post_tags", "posts"
   add_foreign_key "post_tags", "tags"
   add_foreign_key "post_types", "posts"
