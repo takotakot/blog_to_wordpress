@@ -111,4 +111,14 @@ class WordpressMediumHelper
   end
 
   # uploaded -> inserted
+  def self.set_inserted(wp_medium)
+    return nil unless wp_medium.uploaded?
+
+    wp_medium.status = WordpressMedium.statuses[:inserted]
+
+    # For development
+    wp_medium.version = VERSION
+
+    wp_medium.save
+  end
 end
