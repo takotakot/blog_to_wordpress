@@ -166,4 +166,40 @@ module WordpressPostHelper
   def self.post_categories(wp_post)
     SecretLogicHelper.post_categories(wp_post)
   end
+
+  def self.rewrite_media_tags_html(posthelper, wp_post, wp_mediumhelper, mediumhelper)
+    doc = Nokogiri::HTML::DocumentFragment.parse(wp_post.content)
+    tag_attr_list = [
+      'img/@src',
+      'object/@src',
+    ]
+    tag_attr_list.each do |tag_attr|
+      doc.xpath('.//' + tag_attr).each do |node_attr|
+        self.rewrite_tag_attr_at_node(node_attr, posthelper, wp_post, wp_mediumhelper, mediumhelper)
+      end
+    end
+    doc.to_html
+  end
+
+  def self.rewrite_tag_attr_at_node(node_attr, posthelper, wp_post, wp_mediumhelper, mediumhelper)
+    # See Post.add_img_to_medium
+    src = node_attr.value
+
+    # Find medium
+    src_uri = Addressable::URI.parse(wp_post.post.original_uri).join(src)
+    medium = Medium.find_by(uri: src_uri.to_s)
+
+    return nil if medium.nil?
+    return nil unless mediumhelper.rewrite_needed?(medium)
+
+    wp_medium = WordpressMedium.find_by(medium_id: medium.id)
+    # TODO: better handling
+    wp_mediumhelper.set_inserted(wp_medium)
+
+    # No WordpressMedium record is found.
+    raise if wp_medium.nil?
+
+    # Rewrite
+    node_attr.value = wp_medium.source_url
+  end
 end
