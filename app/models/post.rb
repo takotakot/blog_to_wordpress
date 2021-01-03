@@ -119,7 +119,9 @@ class Post < ApplicationRecord
 
   def add_all_img_to_medium
     article.xpath('.//img').each do |img|
-      add_img_to_medium(img)
+      new_medium = add_img_to_medium(img)
+      p new_medium
+      self.medium << new_medium unless self.medium.include?(new_medium)
     end
   end
 
@@ -145,6 +147,7 @@ class Post < ApplicationRecord
     end
 
     medium.save!
+    medium
   end
 
   def add_all_object_to_medium
