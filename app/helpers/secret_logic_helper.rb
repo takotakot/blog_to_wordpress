@@ -36,4 +36,23 @@ module SecretLogicHelper
     end
     return []
   end
+
+  def self.mirror_posts(status: 200, type_id: nil, limit: -1)
+    Post.where(status: status, type_id: type_id).limit(limit).each do |post|
+      WordpressPostHelper.mirror_post(post)
+    end
+  end
+
+  def self.create_not_processed_wp_posts(status: 200, type_id: nil, limit: -1)
+    Post.where(status: status, type_id: type_id).order(date: :asc).limit(limit) do |post|
+      WordpressPostHelper.find_or_create(post)
+    end
+  end
+
+  def self.proceed_wp_posts(limit: -1, status: 1)
+    WordpressPost.joins(:post).where(status: status).merge(Post.order(date: :asc)).limit(limit).each do |wp_post|
+      # p wp_post.post.date
+      WordpressPostHelper.mirror_post(wp_post.post)
+    end
+  end
 end
