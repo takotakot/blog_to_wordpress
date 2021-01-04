@@ -29,6 +29,14 @@ class ApplicationController < ActionController::Base
     result
   end
 
+  def self.crawl_list_pages
+    TO_CRAWL.each do |item|
+      page = BlogPage::Base.new
+      page.get(item[:uri]).crawl_list_page(item)
+      sleep INTERVAL
+    end
+  end
+
   def self.download_media(status: 0, limit: -1)
     require 'parallel'
     skip = [
