@@ -59,6 +59,23 @@ class Post < ApplicationRecord
     tags
   end
 
+  def blog_tag_from_nokogiri_node(node)
+    set_doc
+
+    tag_name = node.text
+    node_uri = URI.join(original_uri, node.xpath('@href').text)
+    query = node_uri.query
+    # node_uri.fragment = node_uri.query = nil
+    tag_uri = node_uri.to_s
+
+    blog_tag = Tag.find_or_initialize_by(name: tag_name, oldid: query)
+    blog_tag.tag_uri.find_or_initialize_by(original_uri: tag_uri)
+    blog_tag.memo = '' if blog_tag.memo.nil?
+
+    blog_tag.save!
+    blog_tag
+  end
+
   def article
     set_doc
 
