@@ -1,0 +1,2 @@
+class WordpressMediumHelper
+end
