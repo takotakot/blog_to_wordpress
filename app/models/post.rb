@@ -59,6 +59,21 @@ class Post < ApplicationRecord
     tags
   end
 
+  def add_all_blog_tags
+    set_doc
+    blog_tag_nodes = @doc.xpath('id("tag_position")/a')
+
+    blog_tags = []
+    blog_tag_nodes.each do |node|
+      blog_tags << blog_tag_from_nokogiri_node(node)
+    end
+
+    # not merge
+    self.tag = blog_tags
+
+    save!
+  end
+
   def blog_tag_from_nokogiri_node(node)
     set_doc
 
